@@ -80,7 +80,7 @@ function ProductDetailsModal({ item, onClose }) {
 
             <button
               onClick={handleAddToCart}
-              className="bg-teal-600 hover:bg-teal-700 text-white px-6 py-3 rounded-2xl shadow-lg hover:shadow-teal-600/20 font-bold transition-all flex items-center gap-2"
+              className="bg-gradient-to-r from-amber-500 via-orange-600 to-rose-500 hover:bg-teal-700 text-white px-6 py-3 rounded-2xl shadow-lg hover:shadow-teal-600/20 font-bold transition-all flex items-center gap-2"
             >
               <FaShoppingCart />
               Add to Cart

@@ -57,6 +57,10 @@ const orderSchema = new mongoose.Schema(
       greetingCard: String,
       ribbonColor: String,
     },
+    deliveryBoy: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "User",
+    },
   },
   { timestamps: true }
 );

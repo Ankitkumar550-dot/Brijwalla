@@ -23,7 +23,7 @@ const CustomBoxPage = () => {
   const [ribbonColor, setRibbonColor] = useState(RIBBON_COLORS[0]);
   const [greetingCard, setGreetingCard] = useState("");
   const [address, setAddress] = useState("");
-  
+
   const [availableItems, setAvailableItems] = useState([]);
   const [selectedItems, setSelectedItems] = useState([]);
   const [fulfillmentShopId, setFulfillmentShopId] = useState(null);
@@ -37,7 +37,7 @@ const CustomBoxPage = () => {
         // Get items for selection
         const itemRes = await axios.get(`${serverUrl}/api/item/search`);
         setAvailableItems(itemRes.data.filter(i => i.foodType === "sweet" || i.category?.toLowerCase() !== "namkeen"));
-        
+
         // Get a shop to tie the order to
         const shopRes = await axios.get(`${serverUrl}/api/shop/all${currentCity ? `?city=${currentCity}` : ""}`);
         if (shopRes.data.length > 0) {
@@ -119,8 +119,8 @@ const CustomBoxPage = () => {
       <Nav />
       <div className="max-w-4xl mx-auto px-4 mt-8">
         <div className="bg-white rounded-3xl shadow-xl overflow-hidden">
-          
-          <div className="bg-gradient-to-r from-teal-500 to-teal-700 p-8 text-white text-center">
+
+          <div className="bg-gradient-to-r from-amber-500 via-orange-600 to-rose-500 p-8 text-white text-center">
             <h1 className="text-3xl font-bold font-serif mb-2 flex items-center justify-center gap-3">
               <FaGift /> Design Your Custom Sweet Box
             </h1>
@@ -131,7 +131,7 @@ const CustomBoxPage = () => {
             {/* Steps Navigation */}
             <div className="flex flex-wrap justify-between mb-10 border-b pb-4 border-gray-100">
               {['Box & Ribbon', 'Greeting Card', 'Sweet Selection', 'Checkout'].map((label, idx) => (
-                <div key={idx} className={`font-semibold ${step >= idx + 1 ? 'text-teal-600' : 'text-gray-400'}`}>
+                <div key={idx} className={`font-semibold ${step >= idx + 1 ? 'text-orange-500' : 'text-red-400'}`}>
                   Step {idx + 1}: {label}
                 </div>
               ))}
@@ -140,13 +140,13 @@ const CustomBoxPage = () => {
             {/* Step 1: Box Type & Ribbon */}
             {step === 1 && (
               <div className="animate-in fade-in zoom-in duration-300">
-                <h2 className="text-xl font-bold mb-6 text-gray-800">Select Box Tier</h2>
+                <h2 className="text-xl font-bold mb-6 text-orange-800">Select Box Tier</h2>
                 <div className="grid grid-cols-1 sm:grid-cols-3 gap-6 mb-8">
                   {BOX_TYPES.map(box => (
-                    <div 
-                      key={box.id} 
+                    <div
+                      key={box.id}
                       onClick={() => setBoxType(box.id)}
-                      className={`border-2 rounded-2xl p-6 cursor-pointer transition-all ${boxType === box.id ? 'border-teal-500 bg-teal-50 shadow-md transform scale-105' : 'border-gray-200 hover:border-teal-300'}`}
+                      className={`border-2 rounded-2xl p-6 cursor-pointer transition-all ${boxType === box.id ? 'border-orange-500 bg-teal-50 shadow-md transform scale-105' : 'border-gray-200 hover:border-teal-300'}`}
                     >
                       <h3 className="font-bold text-lg text-gray-800">{box.id}</h3>
                       <p className="text-sm text-gray-500 mb-3">{box.desc}</p>
@@ -158,18 +158,18 @@ const CustomBoxPage = () => {
                 <h2 className="text-xl font-bold mb-6 text-gray-800">Choose Ribbon Color</h2>
                 <div className="flex gap-4 flex-wrap mb-8">
                   {RIBBON_COLORS.map(color => (
-                    <button 
+                    <button
                       key={color}
                       onClick={() => setRibbonColor(color)}
-                      className={`px-6 py-3 rounded-full font-semibold border-2 transition-all ${ribbonColor === color ? 'border-teal-500 bg-teal-500 text-white shadow-lg' : 'border-gray-200 text-gray-600 hover:border-gray-300'}`}
+                      className={`px-6 py-3 rounded-full font-semibold border-2 transition-all ${ribbonColor === color ? 'border-teal-500 bg-gradient-to-r from-amber-500 via-orange-600 to-rose-500 text-white shadow-lg' : 'border-gray-200 text-gray-600 hover:border-gray-300'}`}
                     >
                       {color}
                     </button>
                   ))}
                 </div>
-                
+
                 <div className="flex justify-end">
-                  <button onClick={() => setStep(2)} className="bg-teal-600 hover:bg-teal-700 text-white font-bold py-3 px-8 rounded-full shadow-md">Next Step</button>
+                  <button onClick={() => setStep(2)} className="bg-gradient-to-r from-amber-500 via-orange-600 to-rose-500 hover:bg-teal-700 text-white font-bold py-3 px-8 rounded-full shadow-md">Next Step</button>
                 </div>
               </div>
             )}
@@ -179,13 +179,13 @@ const CustomBoxPage = () => {
               <div className="animate-in fade-in zoom-in duration-300">
                 <h2 className="text-xl font-bold mb-4 text-gray-800">Add a Personal Message</h2>
                 <p className="text-gray-500 mb-6">We will print this beautifully on a greeting card and place it inside the box.</p>
-                <textarea 
+                <textarea
                   value={greetingCard}
                   onChange={(e) => setGreetingCard(e.target.value)}
                   placeholder="Dear [Name], wishing you..."
                   className="w-full h-40 border border-gray-200 rounded-2xl p-4 text-gray-700 focus:outline-none focus:border-teal-500 focus:ring-2 focus:ring-teal-200 resize-none mb-8"
                 />
-                
+
                 <div className="flex justify-between">
                   <button onClick={() => setStep(1)} className="text-gray-500 font-bold py-3 px-6 hover:text-gray-800">Back</button>
                   <button onClick={() => setStep(3)} className="bg-teal-600 hover:bg-teal-700 text-white font-bold py-3 px-8 rounded-full shadow-md">Next Step</button>
@@ -198,7 +198,7 @@ const CustomBoxPage = () => {
               <div className="animate-in fade-in zoom-in duration-300">
                 <h2 className="text-xl font-bold mb-2 text-gray-800">Curate Your Sweets</h2>
                 <p className="text-gray-500 mb-6">Select the sweets you want included in your custom box.</p>
-                
+
                 {loading ? (
                   <div className="py-10 text-center animate-pulse text-gray-400">Loading exquisite sweets...</div>
                 ) : (
@@ -206,7 +206,7 @@ const CustomBoxPage = () => {
                     {availableItems.map(item => {
                       const isSelected = selectedItems.find(i => i._id === item._id);
                       return (
-                        <div 
+                        <div
                           key={item._id}
                           onClick={() => toggleItemSelection(item)}
                           className={`relative border-2 rounded-xl p-3 cursor-pointer transition-all ${isSelected ? 'border-teal-500 bg-teal-50' : 'border-gray-100 hover:border-gray-200'}`}
@@ -220,7 +220,7 @@ const CustomBoxPage = () => {
                     })}
                   </div>
                 )}
-                
+
                 <div className="flex justify-between items-center mt-4">
                   <button onClick={() => setStep(2)} className="text-gray-500 font-bold py-3 px-6 hover:text-gray-800">Back</button>
                   <div className="font-bold text-gray-700">Selected: {selectedItems.length} item(s)</div>
@@ -233,7 +233,7 @@ const CustomBoxPage = () => {
             {step === 4 && (
               <div className="animate-in fade-in zoom-in duration-300">
                 <h2 className="text-xl font-bold mb-6 text-gray-800">Review & Book</h2>
-                
+
                 <div className="bg-gray-50 rounded-2xl p-6 mb-8 border border-gray-100">
                   <div className="flex justify-between border-b pb-4 mb-4">
                     <span className="font-semibold text-gray-600">Base Box ({boxType})</span>
@@ -245,7 +245,7 @@ const CustomBoxPage = () => {
                   <div className="flex justify-between border-b pb-4 mb-4 text-sm text-gray-500">
                     <span className="max-w-[70%]">Card Message: "{greetingCard || "No message"}"</span>
                   </div>
-                  
+
                   <div className="mb-4">
                     <h4 className="font-bold text-gray-700 mb-2">Selected Sweets:</h4>
                     {selectedItems.map(item => (
@@ -264,7 +264,7 @@ const CustomBoxPage = () => {
 
                 <div className="mb-8">
                   <h3 className="font-bold text-gray-700 mb-2">Delivery Address</h3>
-                  <textarea 
+                  <textarea
                     value={address}
                     onChange={(e) => setAddress(e.target.value)}
                     placeholder="Enter your full delivery address..."
@@ -274,8 +274,8 @@ const CustomBoxPage = () => {
 
                 <div className="flex justify-between items-center">
                   <button onClick={() => setStep(3)} className="text-gray-500 font-bold py-3 px-6 hover:text-gray-800">Back</button>
-                  <button 
-                    onClick={handleBooking} 
+                  <button
+                    onClick={handleBooking}
                     disabled={submitting}
                     className="bg-orange-500 hover:bg-orange-600 text-white font-bold py-3 px-10 rounded-full shadow-lg disabled:bg-gray-300 flex items-center gap-2 text-lg"
                   >

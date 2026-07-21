@@ -83,7 +83,7 @@ function Nav() {
           </p>
         </div>
 
-        {/* Search For User */}
+        {/* For User */}
         {userData?.role === "user" && (
           <div className="hidden md:flex md:w-[40%] lg:w-[45%] h-[55px] bg-white rounded-xl shadow-lg items-center px-4">
             <div className="flex items-center gap-2 border-r border-gray-300 pr-5">
@@ -121,7 +121,7 @@ function Nav() {
               {/* Custom Box CTA */}
               <button
                 onClick={() => navigate("/custom-box")}
-                className="hidden lg:flex items-center gap-2 bg-gradient-to-r from-teal-500 to-teal-600 px-4 py-2 rounded-xl text-white font-bold hover:shadow-lg hover:scale-105 transition-all shadow-md cursor-pointer"
+                className="hidden lg:flex items-center gap-2 bg-gradient-to-r from-amber-500 via-orange-600 to-rose-500 px-4 py-2 rounded-xl text-white font-bold hover:shadow-lg hover:scale-105 transition-all shadow-md cursor-pointer"
               >
                 <FaGift size={16} />
                 <span>Start Building</span>
