@@ -22,7 +22,7 @@ const port = process.env.PORT || 9000;
 
 app.use(
   cors({
-    origin: "http://localhost:5173",
+    origin: ["http://localhost:5173", "https://brijwalla-lovat.vercel.app"],
     credentials: true,
   })
 );
