@@ -85,7 +85,7 @@ ${itemContext}`;
       };
 
       const response = await axios.post(
-        `https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=${geminiApiKey}`,
+        `https://generativelanguage.googleapis.com/v1beta/models/gemini-3.5-flash:generateContent?key=${geminiApiKey}`,
         requestBody
       );
 
@@ -99,6 +99,13 @@ ${itemContext}`;
     return res.status(200).json({ reply });
   } catch (error) {
     console.error("AI Assistant Error:", error.response?.data || error.message);
+    
+    // Check if it's an OpenRouter out of credits error
+    const apiError = error.response?.data?.error?.message;
+    if (apiError && apiError.toLowerCase().includes("credits")) {
+      return res.status(200).json({ reply: "I'm currently unable to answer because my AI service is out of credits. Please configure a valid GEMINI_API_KEY or add credits to OpenRouter." });
+    }
+
     return res.status(500).json({ message: "Error communicating with AI assistant." });
   }
 };
