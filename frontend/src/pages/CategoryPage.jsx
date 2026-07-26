@@ -26,6 +26,7 @@ const getCategoryMetadata = (categoryName) => {
       return { displayName: "Royal Rasmalai", desc: "Soft paneer patties floating in sweetened, cardamom-flavored rich milk cream.", color: "from-yellow-400 to-emerald-500" };
     case "kaju katli":
       return { displayName: "Premium Kaju Katli", desc: "Classic diamond-cut cashew fudge made with premium cashew nuts.", color: "from-slate-400 to-gray-600" };
+
     default:
       return { displayName: name, desc: "Traditional sweet delicacies direct from local confectioners.", color: "from-amber-500 to-rose-500" };
   }
@@ -62,7 +63,7 @@ const CategoryPage = () => {
       <Nav />
       <div className="w-screen min-h-screen bg-[#fff9f6] flex flex-col items-center pb-12">
         <div className="w-full max-w-6xl px-4 py-8 flex flex-col gap-8">
-          
+
           {/* Back button and Banner */}
           <div className="flex flex-col gap-4">
             <button

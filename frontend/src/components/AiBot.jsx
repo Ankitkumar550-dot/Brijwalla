@@ -29,9 +29,9 @@ function AiBot() {
       if (!item) return;
 
       const queryText = `Tell me about ${item.name} sweet from category ${item.category}. What is its description, price, and ingredients?`;
-      
+
       const currentHistory = messages.map(m => ({ role: m.sender === "user" ? "user" : "model", text: m.text }));
-      
+
       setIsOpen(true);
       setMessages((prev) => [...prev, { sender: "user", text: queryText }]);
       setLoading(true);
@@ -99,8 +99,7 @@ function AiBot() {
       {!isOpen && (
         <button
           onClick={() => setIsOpen(true)}
-          className="bg-gradient-to-r from-amber-600 to-yellow-500 hover:from-amber-700 hover:to-yellow-600 text-white p-4 rounded-full shadow-2xl hover:scale-110 active:scale-95 transition-all duration-300 flex items-center justify-center animate-bounce"
-        >
+          className="bg-gradient-to-r from-amber-600 to-yellow-500 hover:from-amber-700 hover:to-yellow-600 text-white p-4 rounded-full shadow-2xl hover:scale-110 active:scale-95 transition-all duration-300 flex items-center justify-center animate-bounce">
           <FaRobot size={24} />
         </button>
       )}
@@ -108,7 +107,7 @@ function AiBot() {
       {/* Chat window */}
       {isOpen && (
         <div className="w-[360px] h-[480px] bg-black rounded-3xl shadow-2xl border border-black-100/50 flex flex-col justify-between overflow-hidden animate-in slide-in-from-bottom-5 duration-250">
-          {/* Header */}
+
           <div className="bg-gradient-to-r from-teal-400 to-teal-400 p-4 flex items-center justify-between text-white">
             <div className="flex items-center gap-2.5">
               <div className="p-2 bg-white rounded-full">
@@ -121,8 +120,7 @@ function AiBot() {
             </div>
             <button
               onClick={() => setIsOpen(false)}
-              className="p-1 hover:bg-white/15 rounded-full transition-colors"
-            >
+              className="p-1 hover:bg-white/15 rounded-full transition-colors">
               <FaTimes size={16} />
             </button>
           </div>
@@ -132,14 +130,12 @@ function AiBot() {
             {messages.map((msg, idx) => (
               <div
                 key={idx}
-                className={`flex ${msg.sender === "user" ? "justify-end" : "justify-start"}`}
-              >
+                className={`flex ${msg.sender === "user" ? "justify-end" : "justify-start"}`} >
                 <div
                   className={`max-w-[80%] p-3 rounded-2xl text-sm leading-relaxed ${msg.sender === "user"
                     ? "bg-teal-600 text-white rounded-br-none"
                     : "bg-white text-gray-800 shadow-sm border border-orange-100/20 rounded-bl-none"
-                    }`}
-                >
+                    }`} >
                   {msg.text}
                 </div>
               </div>
@@ -163,13 +159,11 @@ function AiBot() {
               value={input}
               onChange={(e) => setInput(e.target.value)}
               placeholder="Ask for low sugar sweets, Pedha specials..."
-              className="flex-1 outline-none text-sm px-4 py-2.5 bg-[#fff9f6] border border-orange-100/30 rounded-xl focus:border-teal-500 transition-colors"
-            />
+              className="flex-1 outline-none text-sm px-4 py-2.5 bg-[#fff9f6] border border-orange-100/30 rounded-xl focus:border-teal-500 transition-colors" />
             <button
               type="submit"
               disabled={loading || !input.trim()}
-              className="bg-teal-600 hover:bg-teal-700 disabled:bg-teal-300 text-white p-3 rounded-xl transition-all active:scale-95 flex items-center justify-center"
-            >
+              className="bg-teal-600 hover:bg-teal-700 disabled:bg-teal-300 text-white p-3 rounded-xl transition-all active:scale-95 flex items-center justify-center">
               <FaPaperPlane size={14} />
             </button>
           </form>
