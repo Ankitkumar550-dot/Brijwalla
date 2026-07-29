@@ -175,19 +175,23 @@ const SignUp = () => {
               Select Role
             </label>
 
-            <div className="grid grid-cols-3 gap-3">
-              {["user", "owner", "deliveryBoy"].map((r) => (
+            <div className="flex flex-col sm:flex-row sm:grid sm:grid-cols-3 gap-3">
+              {[
+                { id: "user", label: "User" },
+                { id: "owner", label: "Owner" },
+                { id: "deliveryBoy", label: "Delivery" }
+              ].map((r) => (
                 <button
-                  key={r}
+                  key={r.id}
                   type="button"
-                  onClick={() => setRole(r)}
-                  className={`rounded-xl py-2 font-medium transition-all ${
-                    role === r
+                  onClick={() => setRole(r.id)}
+                  className={`rounded-xl py-2 font-medium transition-all text-sm sm:text-base ${
+                    role === r.id
                       ? "bg-cyan-500 text-white"
                       : "border border-gray-300 text-gray-700 hover:bg-gray-50"
                   }`}
                 >
-                  {r}
+                  {r.label}
                 </button>
               ))}
             </div>
