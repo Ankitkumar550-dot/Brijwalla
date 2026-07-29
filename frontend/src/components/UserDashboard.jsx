@@ -8,8 +8,6 @@ import ProductDetailsModal from "./ProductDetailsModal";
 import AiBot from "./AiBot";
 import { FaStore, FaUtensils, FaMapMarkerAlt, FaGift } from "react-icons/fa";
 
-import lordKrishnaImg from "../assets/lordkrishna.png";
-
 const UserDashboard = () => {
   const { currentCity } = useSelector((state) => state.user);
   const navigate = useNavigate();

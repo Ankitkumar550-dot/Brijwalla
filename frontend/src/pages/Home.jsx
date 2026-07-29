@@ -1,13 +1,28 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import { useSelector } from "react-redux";
 import Nav from "../components/Nav";
 import UserDashboard from "../components/UserDashboard";
 import DeliveryBoy from "../components/DeliveryBoy";
 import OwnerDashboard from "../components/OwnerDashboard";
-import lordKrishnaImg from "../assets/lordkrishna.png";
+
+// Import all images from the display folder dynamically
+const imagesGlob = import.meta.glob('../assets/display/*', { eager: true, import: 'default' });
+const images = Object.values(imagesGlob);
+console.log("Dynamically loaded images:", images);
 
 function Home() {
   const { userData } = useSelector((state) => state.user);
+  const [currentImageIndex, setCurrentImageIndex] = useState(0);
+
+  useEffect(() => {
+    if (images.length === 0) return;
+    
+    const interval = setInterval(() => {
+      setCurrentImageIndex((prevIndex) => (prevIndex + 1) % images.length);
+    }, 5000);
+
+    return () => clearInterval(interval);
+  }, []);
 
   if (!userData) {
     return <div>Loading...</div>;
@@ -20,11 +35,30 @@ function Home() {
         {/* Container with rounded corners */}
         <div className="relative w-full h-[500px] md:h-[650px] overflow-hidden rounded-3xl">
 
-          {/* Background Image */}
-          <div
-            className="absolute inset-0 bg-cover bg-center bg-no-repeat"
-            style={{ backgroundImage: `url(${lordKrishnaImg})` }}
-          ></div>
+          {/* Background Images with smooth transition */}
+          {images.length > 0 ? (
+            images.map((img, index) => (
+              <div
+                key={index}
+                className={`absolute inset-0 transition-opacity duration-1000 ease-in-out ${
+                  index === currentImageIndex ? "opacity-100 z-0" : "opacity-0 -z-10"
+                }`}
+              >
+                {/* Blurred stretched background to fill empty space */}
+                <div 
+                  className="absolute inset-0 bg-cover bg-center opacity-50 blur-xl scale-110" 
+                  style={{ backgroundImage: `url("${img}")` }}
+                ></div>
+                {/* Unstretched foreground image to prevent blurriness */}
+                <div 
+                  className="absolute inset-0 bg-contain bg-center bg-no-repeat drop-shadow-2xl" 
+                  style={{ backgroundImage: `url("${img}")` }}
+                ></div>
+              </div>
+            ))
+          ) : (
+            <div className="absolute inset-0 bg-gray-200"></div>
+          )}
 
           {/* Light Black Gradient Overlay on the left */}
           <div className="absolute inset-0 bg-gradient-to-r from-black/80 via-black/50 to-transparent"></div>
