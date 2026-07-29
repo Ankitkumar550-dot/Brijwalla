@@ -16,7 +16,7 @@ import CategoryPage from "./pages/CategoryPage";
 import BuyItemPage from "./pages/BuyItemPage";
 import CustomBoxPage from "./pages/CustomBoxPage";
 
-export const serverUrl = "http://localhost:9000";
+export const serverUrl = "https://brijwalla.onrender.com";
 
 function App() {
   useGetCurrentUser();
