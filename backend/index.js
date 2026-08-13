@@ -38,9 +38,18 @@ app.use("/api/order", orderRouter);
 app.use("/api/ai", aiRouter);
 app.use("/api/festivals", festivalRouter);
 
+// Connect to DB and seed data
+// Top-level await is supported because "type": "module" is in package.json
+await connectDb();
+await seedDatabase();
 
-app.listen(port, async () => {
-  await connectDb();
-  await seedDatabase();
-  console.log(`Server started at ${port}`);
-});
+// In Vercel, we don't start the server with app.listen (Vercel handles it).
+// But for Render and local development, we need to listen on the port.
+if (!process.env.VERCEL) {
+  app.listen(port, () => {
+    console.log(`Server started at ${port}`);
+  });
+}
+
+// Export the Express app for Vercel Serverless functions
+export default app;
