@@ -16,7 +16,7 @@ import CategoryPage from "./pages/CategoryPage";
 import BuyItemPage from "./pages/BuyItemPage";
 import CustomBoxPage from "./pages/CustomBoxPage";
 
-export const serverUrl = "http://localhost:9000"
+export const serverUrl = import.meta.env.VITE_SERVER_URL || "http://localhost:9000";
 
 function App() {
   useGetCurrentUser();
