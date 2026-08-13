@@ -6,7 +6,7 @@ import DeliveryBoy from "../components/DeliveryBoy";
 import OwnerDashboard from "../components/OwnerDashboard";
 
 // Import all images from the display folder dynamically
-const imagesGlob = import.meta.glob('../assets/display/*', { eager: true, import: 'default' });
+const imagesGlob = import.meta.glob('../assets/display/*.{png,jpg,jpeg,webp,svg,gif}', { eager: true, import: 'default' });
 const images = Object.values(imagesGlob);
 console.log("Dynamically loaded images:", images);
 
@@ -24,9 +24,7 @@ function Home() {
     return () => clearInterval(interval);
   }, []);
 
-  if (!userData) {
-    return <div>Loading...</div>;
-  }
+
 
   return (
     <>
@@ -98,9 +96,9 @@ function Home() {
         </div>
       </div>
       <div className="w-screen min-h-screen flex flex-col items-center bg-[#fff9f6]">
-        {userData.role === "user" && <UserDashboard />}
-        {userData.role === "owner" && <OwnerDashboard />}
-        {userData.role === "deliveryBoy" && <DeliveryBoy />}
+        {(!userData || userData.role === "user") && <UserDashboard />}
+        {userData?.role === "owner" && <OwnerDashboard />}
+        {userData?.role === "deliveryBoy" && <DeliveryBoy />}
       </div>
     </>
   );

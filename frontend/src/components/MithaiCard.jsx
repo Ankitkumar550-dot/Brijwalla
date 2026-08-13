@@ -10,6 +10,7 @@ function MithaiCard({ item, onClick }) {
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const wishlist = useSelector((state) => state.wishlist.items);
+  const { userData } = useSelector((state) => state.user);
   const isWishlisted = wishlist.some((w) => w._id === item._id);
 
   const handleWishlistClick = (e) => {
@@ -19,12 +20,20 @@ function MithaiCard({ item, onClick }) {
 
   const handleAddToCartClick = (e) => {
     e.stopPropagation();
+    if (!userData) {
+      navigate("/signin");
+      return;
+    }
     dispatch(addToCart(item));
     alert(`${item.name} added to cart!`);
   };
 
   const handleBuyNowClick = (e) => {
     e.stopPropagation();
+    if (!userData) {
+      navigate("/signin");
+      return;
+    }
     navigate(`/buy-item/${item._id}`);
   };
 

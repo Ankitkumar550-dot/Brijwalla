@@ -194,84 +194,93 @@ function Nav() {
             </>
           )}
 
-          {/* Profile Dropdown */}
-          <div className="relative">
-            <div
-              onClick={() => setShowProfile(!showProfile)}
-              className="w-10 h-10 rounded-full bg-gradient-to-r from-amber-500 via-orange-600 to-rose-500 flex items-center justify-center font-black shadow-md cursor-pointer hover:bg-teal-700 transition-colors uppercase border border-teal-200"
+          {/* Profile Dropdown or Login */}
+          {!userData ? (
+            <button
+              onClick={() => navigate("/signin")}
+              className="bg-gradient-to-r from-teal-500 to-teal-600 hover:from-teal-600 hover:to-teal-700 text-white px-5 py-2 rounded-xl font-bold shadow-md transition-all cursor-pointer"
             >
-              {userData?.fullName?.charAt(0) || "U"}
-            </div>
-
-            {showProfile && (
-              <div className="absolute right-0 top-12 w-[220px] bg-white rounded-2xl shadow-2xl p-4 flex flex-col gap-3.5 z-[9999] border border-orange-100/40">
-                <div>
-                  <h3 className="font-bold text-gray-800 text-sm truncate">
-                    {userData?.fullName}
-                  </h3>
-                  <p className="text-xs text-gray-400 truncate">
-                    {userData?.email}
-                  </p>
-                  <p className="text-[10px] text-teal-600 font-bold uppercase tracking-wider mt-0.5">
-                    {userData?.role}
-                  </p>
-                </div>
-
-                <hr className="border-gray-100" />
-
-                <button
-                  onClick={() => {
-                    navigate("/profile");
-                    setShowProfile(false);
-                  }}
-                  className="text-left text-sm text-gray-600 hover:text-teal-600 font-semibold cursor-pointer"
-                >
-                  My Profile
-                </button>
-
-                <button
-                  onClick={() => {
-                    navigate("/orders");
-                    setShowProfile(false);
-                  }}
-                  className="text-left text-sm text-gray-600 hover:text-teal-600 font-semibold cursor-pointer"
-                >
-                  My Orders
-                </button>
-
-                <button
-                  onClick={() => {
-                    navigate("/settings");
-                    setShowProfile(false);
-                  }}
-                  className="text-left text-sm text-gray-600 hover:text-teal-600 font-semibold cursor-pointer"
-                >
-                  Preferences & Settings
-                </button>
-
-                {userData?.role === "owner" && (
-                  <>
-                    <button
-                      onClick={() => {
-                        navigate("/create-edit-shop");
-                        setShowProfile(false);
-                      }}
-                      className="text-left text-sm text-gray-600 hover:text-teal-600 font-semibold cursor-pointer"
-                    >
-                      {myShopData ? "Edit Shop Details" : "Add Sweet Shop"}
-                    </button>
-                  </>
-                )}
-
-                <button
-                  onClick={handleLogOut}
-                  className="text-left text-sm text-red-500 hover:text-red-700 font-bold pt-1 border-t border-gray-50 cursor-pointer"
-                >
-                  Logout
-                </button>
+              Login
+            </button>
+          ) : (
+            <div className="relative">
+              <div
+                onClick={() => setShowProfile(!showProfile)}
+                className="w-10 h-10 rounded-full bg-gradient-to-r from-amber-500 via-orange-600 to-rose-500 flex items-center justify-center font-black shadow-md cursor-pointer hover:bg-teal-700 transition-colors uppercase border border-teal-200"
+              >
+                {userData.fullName?.charAt(0) || "U"}
               </div>
-            )}
-          </div>
+
+              {showProfile && (
+                <div className="absolute right-0 top-12 w-[220px] bg-white rounded-2xl shadow-2xl p-4 flex flex-col gap-3.5 z-[9999] border border-orange-100/40">
+                  <div>
+                    <h3 className="font-bold text-gray-800 text-sm truncate">
+                      {userData.fullName}
+                    </h3>
+                    <p className="text-xs text-gray-400 truncate">
+                      {userData.email}
+                    </p>
+                    <p className="text-[10px] text-teal-600 font-bold uppercase tracking-wider mt-0.5">
+                      {userData.role}
+                    </p>
+                  </div>
+
+                  <hr className="border-gray-100" />
+
+                  <button
+                    onClick={() => {
+                      navigate("/profile");
+                      setShowProfile(false);
+                    }}
+                    className="text-left text-sm text-gray-600 hover:text-teal-600 font-semibold cursor-pointer"
+                  >
+                    My Profile
+                  </button>
+
+                  <button
+                    onClick={() => {
+                      navigate("/orders");
+                      setShowProfile(false);
+                    }}
+                    className="text-left text-sm text-gray-600 hover:text-teal-600 font-semibold cursor-pointer"
+                  >
+                    My Orders
+                  </button>
+
+                  <button
+                    onClick={() => {
+                      navigate("/settings");
+                      setShowProfile(false);
+                    }}
+                    className="text-left text-sm text-gray-600 hover:text-teal-600 font-semibold cursor-pointer"
+                  >
+                    Preferences & Settings
+                  </button>
+
+                  {userData.role === "owner" && (
+                    <>
+                      <button
+                        onClick={() => {
+                          navigate("/create-edit-shop");
+                          setShowProfile(false);
+                        }}
+                        className="text-left text-sm text-gray-600 hover:text-teal-600 font-semibold cursor-pointer"
+                      >
+                        {myShopData ? "Edit Shop Details" : "Add Sweet Shop"}
+                      </button>
+                    </>
+                  )}
+
+                  <button
+                    onClick={handleLogOut}
+                    className="text-left text-sm text-red-500 hover:text-red-700 font-bold pt-1 border-t border-gray-50 cursor-pointer"
+                  >
+                    Logout
+                  </button>
+                </div>
+              )}
+            </div>
+          )}
         </div>
       </div>
 

@@ -16,7 +16,7 @@ import CategoryPage from "./pages/CategoryPage";
 import BuyItemPage from "./pages/BuyItemPage";
 import CustomBoxPage from "./pages/CustomBoxPage";
 
-export const serverUrl = "https://brijwalla.onrender.com";
+export const serverUrl = "http://localhost:9000";
 
 function App() {
   useGetCurrentUser();
@@ -29,7 +29,7 @@ function App() {
     <Routes>
       <Route
         path="/"
-        element={userData ? <Home /> : <Navigate to="/signin" />}
+        element={<Home />}
       />
 
       <Route
@@ -68,7 +68,7 @@ function App() {
       />
       <Route
         path="/category/:categoryName"
-        element={userData ? <CategoryPage /> : <Navigate to="/signin" />}
+        element={<CategoryPage />}
       />
       <Route
         path="/buy-item/:itemId"

@@ -1,15 +1,22 @@
 import React from "react";
 import { FaTimes, FaStar, FaStore, FaShoppingCart } from "react-icons/fa";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
+import { useNavigate } from "react-router-dom";
 import { addToCart } from "../redux/cartSlice";
 import { resolveLocalImage } from "../utils/imageResolver";
 
 function ProductDetailsModal({ item, onClose }) {
   const dispatch = useDispatch();
+  const navigate = useNavigate();
+  const { userData } = useSelector((state) => state.user);
 
   if (!item) return null;
 
   const handleAddToCart = () => {
+    if (!userData) {
+      navigate("/signin");
+      return;
+    }
     dispatch(addToCart(item));
     alert(`${item.name} added to cart!`);
   };

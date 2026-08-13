@@ -4,12 +4,11 @@ import Item from "../models/itemModel.js";
 export const getMithaiRecommendation = async (req, res) => {
   try {
     const { prompt, history = [] } = req.body;
-    const openrouterApiKey = process.env.OPENROUTER_API_KEY;
     const geminiApiKey = process.env.GEMINI_API_KEY;
 
-    if (!openrouterApiKey && !geminiApiKey) {
+    if (!geminiApiKey) {
       return res.status(200).json({
-        reply: "Hello! I am your AI Mithai Bot. To get intelligent recommendations, please configure the `OPENROUTER_API_KEY` or `GEMINI_API_KEY` in the environment variables. In the meantime, I highly recommend checking out our delicious Pedhas, Kaju Katli, and Rasgullas from local shops!",
+        reply: "Hello! I am your AI Mithai Bot. To get intelligent recommendations, please configure the `GEMINI_API_KEY` in the environment variables. In the meantime, I highly recommend checking out our delicious Pedhas, Kaju Katli, and Rasgullas from local shops!",
       });
     }
 
@@ -28,69 +27,50 @@ ${itemContext}`;
 
     let reply = "";
 
-    if (openrouterApiKey) {
-      const openRouterHistory = history.map(h => ({
-        role: h.role === "model" ? "assistant" : "user",
-        content: h.text
-      }));
+    let geminiHistory = history.map(h => ({
+      role: h.role === "model" ? "model" : "user",
+      parts: [{ text: h.text }]
+    }));
 
-      const response = await axios.post(
-        "https://openrouter.ai/api/v1/chat/completions",
-        {
-          model: "google/gemini-2.5-flash",
-          messages: [
-            {
-              role: "system",
-              content: systemPrompt,
-            },
-            ...openRouterHistory,
-            {
-              role: "user",
-              content: prompt,
-            },
-          ],
-          max_tokens: 800,
-        },
-        {
-          headers: {
-            Authorization: `Bearer ${openrouterApiKey}`,
-            "Content-Type": "application/json",
-          },
+    // Ensure strictly alternating roles starting with 'user'
+    let validGeminiHistory = [];
+    for (let i = 0; i < geminiHistory.length; i++) {
+      const currentMsg = geminiHistory[i];
+      if (validGeminiHistory.length === 0) {
+        if (currentMsg.role === 'user') validGeminiHistory.push(currentMsg);
+      } else {
+        const lastMsg = validGeminiHistory[validGeminiHistory.length - 1];
+        if (lastMsg.role === currentMsg.role) {
+          lastMsg.parts[0].text += "\n" + currentMsg.parts[0].text;
+        } else {
+          validGeminiHistory.push(currentMsg);
         }
-      );
-      reply = response.data?.choices?.[0]?.message?.content || "";
-    } else {
-      let geminiHistory = history.map(h => ({
-        role: h.role, // 'user' or 'model'
-        parts: [{ text: h.text }]
-      }));
-
-      // Gemini requires the history to start with a 'user' role.
-      // The frontend starts with a bot greeting, so we must remove any leading 'model' messages.
-      while (geminiHistory.length > 0 && geminiHistory[0].role === 'model') {
-        geminiHistory.shift();
       }
-
-      const requestBody = {
-        systemInstruction: {
-          parts: [{ text: systemPrompt }]
-        },
-        contents: [
-          ...geminiHistory,
-          {
-            role: "user",
-            parts: [{ text: prompt }]
-          }
-        ]
-      };
-
-      const response = await axios.post(
-        `https://generativelanguage.googleapis.com/v1beta/models/gemini-3.5-flash:generateContent?key=${geminiApiKey}`,
-        requestBody
-      );
-
-      reply = response.data?.candidates?.[0]?.content?.parts?.[0]?.text || "";
     }
+
+    // Append the current prompt
+    if (validGeminiHistory.length > 0 && validGeminiHistory[validGeminiHistory.length - 1].role === "user") {
+      validGeminiHistory[validGeminiHistory.length - 1].parts[0].text += "\n" + prompt;
+    } else {
+      validGeminiHistory.push({
+        role: "user",
+        parts: [{ text: prompt }]
+      });
+    }
+
+    const requestBody = {
+      systemInstruction: {
+        parts: [{ text: systemPrompt }]
+      },
+      contents: validGeminiHistory
+    };
+
+    const response = await axios.post(
+      `https://generativelanguage.googleapis.com/v1beta/models/gemini-3.5-flash:generateContent?key=${geminiApiKey}`,
+      requestBody
+    );
+
+    reply = response.data?.candidates?.[0]?.content?.parts?.[0]?.text || "";
 
     if (!reply) {
       reply = "I'm sorry, I'm having trouble thinking right now. Feel free to browse our wide selection of sweets!";
@@ -99,11 +79,10 @@ ${itemContext}`;
     return res.status(200).json({ reply });
   } catch (error) {
     console.error("AI Assistant Error:", error.response?.data || error.message);
-    
-    // Check if it's an OpenRouter out of credits error
     const apiError = error.response?.data?.error?.message;
-    if (apiError && apiError.toLowerCase().includes("credits")) {
-      return res.status(200).json({ reply: "I'm currently unable to answer because my AI service is out of credits. Please configure a valid GEMINI_API_KEY or add credits to OpenRouter." });
+    console.error("Gemini API Error Detail:", apiError);
+    if (apiError && apiError.includes("API key not valid")) {
+      return res.status(200).json({ reply: "It seems your GEMINI_API_KEY is invalid. Please double-check it in your .env file." });
     }
 
     return res.status(500).json({ message: "Error communicating with AI assistant." });
