@@ -12,7 +12,7 @@ export const getMithaiRecommendation = async (req, res) => {
       });
     }
 
-    // Fetch existing database sweets to supply as context
+
     const items = await Item.find({}).populate("shop");
     const itemContext = items
       .map((i) => `- ${i.name} (${i.foodType}) from shop "${i.shop?.name || "Local Shop"}" at price ₹${i.price}`)
@@ -32,7 +32,7 @@ ${itemContext}`;
       parts: [{ text: h.text }]
     }));
 
-    // Ensure strictly alternating roles starting with 'user'
+
     let validGeminiHistory = [];
     for (let i = 0; i < geminiHistory.length; i++) {
       const currentMsg = geminiHistory[i];
@@ -48,7 +48,7 @@ ${itemContext}`;
       }
     }
 
-    // Append the current prompt
+
     if (validGeminiHistory.length > 0 && validGeminiHistory[validGeminiHistory.length - 1].role === "user") {
       validGeminiHistory[validGeminiHistory.length - 1].parts[0].text += "\n" + prompt;
     } else {
