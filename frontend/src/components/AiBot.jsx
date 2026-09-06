@@ -108,7 +108,7 @@ function AiBot() {
       {isOpen && (
         <div className="w-[360px] h-[480px] bg-black rounded-3xl shadow-2xl border border-black-100/50 flex flex-col justify-between overflow-hidden animate-in slide-in-from-bottom-5 duration-250">
 
-          <div className="bg-gradient-to-r from-teal-400 to-teal-400 p-4 flex items-center justify-between text-white">
+          <div className="bg-gradient-to-r from-amber-500 via-orange-600 to-rose-500 p-4 flex items-center justify-between text-white">
             <div className="flex items-center gap-2.5">
               <div className="p-2 bg-white rounded-full">
                 <FaRobot size={20} />
@@ -126,14 +126,14 @@ function AiBot() {
           </div>
 
           {/* Messages */}
-          <div className="flex-1 p-4 overflow-y-auto space-y-3 bg-[#fff9f6]/40">
+          <div className="flex-1 p-4 overflow-y-auto space-y-3 bg-black-500">
             {messages.map((msg, idx) => (
               <div
                 key={idx}
                 className={`flex ${msg.sender === "user" ? "justify-end" : "justify-start"}`} >
                 <div
                   className={`max-w-[80%] p-3 rounded-2xl text-sm leading-relaxed ${msg.sender === "user"
-                    ? "bg-teal-600 text-white rounded-br-none"
+                    ? "bg-blue-600 text-white rounded-br-none"
                     : "bg-white text-gray-800 shadow-sm border border-orange-100/20 rounded-bl-none"
                     }`} >
                   {msg.text}
@@ -153,17 +153,17 @@ function AiBot() {
           </div>
 
           {/* Input Form */}
-          <form onSubmit={handleSend} className="p-3 bg-white border-t border-gray-150 flex gap-2">
+          <form onSubmit={handleSend} className="p-3 bg-via-orange-600 to-rose-500 border-t border-gray-150 flex gap-2">
             <input
               type="text"
               value={input}
               onChange={(e) => setInput(e.target.value)}
               placeholder="Ask for low sugar sweets, Pedha specials..."
-              className="flex-1 outline-none text-sm px-4 py-2.5 bg-[#fff9f6] border border-orange-100/30 rounded-xl focus:border-teal-500 transition-colors" />
+              className="flex-1 outline-none text-white px-4 py-2.5 bg-black border border-orange-100/30 rounded-xl focus:border-orange-500 transition-colors" />
             <button
               type="submit"
               disabled={loading || !input.trim()}
-              className="bg-teal-600 hover:bg-teal-700 disabled:bg-teal-300 text-white p-3 rounded-xl transition-all active:scale-95 flex items-center justify-center">
+              className="bg-orange-600 hover:bg-orange-700 disabled:bg-orange-600 text-white p-3 rounded-xl transition-all active:scale-95 flex items-center justify-center">
               <FaPaperPlane size={14} />
             </button>
           </form>
